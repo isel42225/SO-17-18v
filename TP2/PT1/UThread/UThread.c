@@ -58,8 +58,7 @@ PUTHREAD MainThread;
 ////////////////////////////////////////////////
 //
 // Forward declaration of internal operations.
-//
-
+VOID __fastcall CleanupThread (PUTHREAD Thread);
 //
 // The trampoline function that a user thread begins by executing, through
 // which the associated function is called.
@@ -349,6 +348,26 @@ BOOL UtJoin(HANDLE hthread) {
 	return TRUE;
 }
 
+void UtDump()
+{
+	PLIST_ENTRY  curr = AliveThreads.Flink;	//link to first thread
+	PUTHREAD  th;
+	for (int i = 0; i < NumberOfThreads; ++i)
+	{
+		th = CONTAINING_RECORD(curr, UTHREAD, AliveLink);
+		PUTHREAD_CONTEXT context = th->ThreadContext;
+		DWORD StackPointer = (DWORD)context;
+		DWORD BaseStack = (DWORD)th->Stack;
+		HANDLE hT = (HANDLE)th;
+		DWORD TopStack = BaseStack + th->StackSize ;
+		DWORD UsedStack = (TopStack - StackPointer) * 100 / STACK_SIZE;
+
+		printf("Handle = %p,  Name = %s , Ocupied Stack = %d", hT, th->Name, UsedStack);
+		curr = curr->Flink;
+	}
+}
+
+
 ///////////////////////////////////////
 //
 // Definition of internal operations.
@@ -381,15 +400,19 @@ VOID __fastcall CleanupThread (PUTHREAD Thread) {
 //
 // Creates a user thread to run the specified function. The thread is placed
 // at the end of the ready queue.
-//
-HANDLE UtCreate32 (UT_FUNCTION Function, UT_ARGUMENT Argument) {
+// Added name and custom stack size
+HANDLE UtCreate32 (TCHAR Name , DWORD StackSize, UT_FUNCTION Function, UT_ARGUMENT Argument) {
 	PUTHREAD Thread;
 	
 	//
 	// Dynamically allocate an instance of UTHREAD and the associated stack.
 	//
 	Thread = (PUTHREAD) malloc(sizeof (UTHREAD));
-	Thread->Stack = (PUCHAR) malloc(STACK_SIZE);
+	Thread->Name = Name;
+	
+	//Thread->Stack = (PUCHAR) malloc(STACK_SIZE);
+	Thread->Stack = (PUCHAR)malloc(StackSize);
+	Thread->StackSize = StackSize;
 	_ASSERTE(Thread != NULL && Thread->Stack != NULL);
 
 	//
@@ -618,7 +641,8 @@ HANDLE UtCreate64 (UT_FUNCTION Function, UT_ARGUMENT Argument) {
 	// registers that must be saved by the called (R15,R14,R13,R12, RSI, RDI, RBCX, RBP)
 	
 	// 
-	// Upon the first context switch to this thread, after popping the dummy
+	// Upon the first context switch to this thread, after poppi
+	ng the dummy
 	// values of the "saved" registers, a ret instruction will place the
 	// address of InternalStart on EIP.
 	//

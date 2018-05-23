@@ -13,6 +13,7 @@
 #pragma once
 
 #include <Windows.h>
+#include <stdio.h>
 #include "UThread.h"
 #include "List.h"
 #include <assert.h>
@@ -82,8 +83,9 @@ typedef struct UtContext {
 //
 typedef struct _UTHREAD {
 	PUTHREAD_CONTEXT ThreadContext;
+	PCHAR 			 Name;
 	BOOL			 Terminate;
-	INT				 WaitCount;
+	DWORD			 WaitCount;
 	STATE			 State;		//Current thread State
 	LIST_ENTRY       Link;		//ReadyQueue Link node 
 	LIST_ENTRY		 AliveLink;	// the link node for AliveThreads list
@@ -91,6 +93,7 @@ typedef struct _UTHREAD {
 	UT_FUNCTION      Function;   
 	UT_ARGUMENT      Argument; 
 	PUCHAR           Stack;
+	DWORD			 StackSize;
 } UTHREAD, *PUTHREAD;
 
 
