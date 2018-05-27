@@ -22,7 +22,8 @@ namespace UthreadsTest
 		{
 			UtInit();
 			BOOL isAlive = FALSE;
-			UtCreate(Func1, &isAlive);
+			
+			UtCreate("Thread1" , 0, Func1, &isAlive);
 			UtRun();
 			Assert::IsTrue(isAlive == TRUE);
 			UtEnd();
