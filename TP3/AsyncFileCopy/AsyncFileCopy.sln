@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AsyncFileCopy", "AsyncFileCopy\AsyncFileCopy.vcxproj", "{A8E1AE5A-706F-418B-A1DB-6818D1BE91CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8E1AE5A-706F-418B-A1DB-6818D1BE91CA}.Debug|x64.ActiveCfg = Debug|x64
+		{A8E1AE5A-706F-418B-A1DB-6818D1BE91CA}.Debug|x64.Build.0 = Debug|x64
+		{A8E1AE5A-706F-418B-A1DB-6818D1BE91CA}.Debug|x86.ActiveCfg = Debug|Win32
+		{A8E1AE5A-706F-418B-A1DB-6818D1BE91CA}.Debug|x86.Build.0 = Debug|Win32
+		{A8E1AE5A-706F-418B-A1DB-6818D1BE91CA}.Release|x64.ActiveCfg = Release|x64
+		{A8E1AE5A-706F-418B-A1DB-6818D1BE91CA}.Release|x64.Build.0 = Release|x64
+		{A8E1AE5A-706F-418B-A1DB-6818D1BE91CA}.Release|x86.ActiveCfg = Release|Win32
+		{A8E1AE5A-706F-418B-A1DB-6818D1BE91CA}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C6010977-423E-4F70-B7A9-35549F4D7791}
+	EndGlobalSection
+EndGlobal
