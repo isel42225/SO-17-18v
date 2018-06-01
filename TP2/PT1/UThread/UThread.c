@@ -313,9 +313,17 @@ VOID UtTerminateThread(HANDLE tHandle) {
 }
 
 BOOL UtMultJoin(HANDLE handle[], int size) {
+	PUTHREAD self = (PUTHREAD)UtSelf();
 	while (size-- > 0) {
+		WAIT_BLOCK wait;
+		InitializeWaitBlock(&wait);
 		PUTHREAD t = (PUTHREAD)handle[size];
+		if (t == self) return FALSE;
+		wait.Thread = self;
+		t->Joiners = wait.Link;
 	}
+	UtDeactivate();
+	return TRUE;
 }
 
  BOOL UtAlive(HANDLE hThread) {
@@ -401,7 +409,7 @@ VOID __fastcall CleanupThread (PUTHREAD Thread) {
 // Creates a user thread to run the specified function. The thread is placed
 // at the end of the ready queue.
 // Added name and custom stack size
-HANDLE UtCreate32 (TCHAR Name , DWORD StackSize, UT_FUNCTION Function, UT_ARGUMENT Argument) {
+HANDLE UtCreate32 (PCHAR Name , DWORD StackSize, UT_FUNCTION Function, UT_ARGUMENT Argument) {
 	PUTHREAD Thread;
 	
 	//
@@ -409,7 +417,7 @@ HANDLE UtCreate32 (TCHAR Name , DWORD StackSize, UT_FUNCTION Function, UT_ARGUME
 	//
 	Thread = (PUTHREAD) malloc(sizeof (UTHREAD));
 	Thread->Name = Name;
-	
+	if (StackSize == 0) StackSize = STACK_SIZE;
 	//Thread->Stack = (PUCHAR) malloc(STACK_SIZE);
 	Thread->Stack = (PUCHAR)malloc(StackSize);
 	Thread->StackSize = StackSize;
@@ -418,7 +426,7 @@ HANDLE UtCreate32 (TCHAR Name , DWORD StackSize, UT_FUNCTION Function, UT_ARGUME
 	//
 	// Zero the stack for emotional confort.
 	//
-	memset(Thread->Stack, 0, STACK_SIZE);
+	memset(Thread->Stack, 0, StackSize);
 
 	//
 	// Memorize Function and Argument for use in InternalStart.
@@ -474,6 +482,7 @@ HANDLE UtCreate32 (TCHAR Name , DWORD StackSize, UT_FUNCTION Function, UT_ARGUME
 
 	// Start of new Stuff
 		// Add to active list
+		
 		InsertTailList(&AliveThreads, &Thread->AliveLink);
 
 

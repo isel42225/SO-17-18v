@@ -15,6 +15,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "UThread.h"
+#include "WaitBlock.h"
 #include "List.h"
 #include <assert.h>
 //

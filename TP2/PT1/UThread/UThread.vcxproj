@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="..\Include\UThread.h" />
     <ClInclude Include="UThreadInternal.h" />
+    <ClInclude Include="WaitBlock.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
