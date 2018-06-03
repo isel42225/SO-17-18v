@@ -12,7 +12,7 @@ typedef struct OperCtx {
 	BYTE buffer[BUFFER_SIZE];
 	UINT64 currPos;
 	AsyncCallback cb;
-	DWORD r_w;	//signal if is read or write
+	BOOL read;	//if TRUE is read 
 	LPVOID userCtx;
 } OPER_CTX, *POPER_CTX;
 
