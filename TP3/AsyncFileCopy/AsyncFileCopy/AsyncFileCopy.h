@@ -1,4 +1,11 @@
-#pragma once 
+#pragma once
+
+#ifdef AsyncFileCopyDLL
+#define AsyncFileCopy_API __declspec(dllexport)
+#else
+#define AsyncFileCopy_API  __declspec(dllimport)
+#endif
+
 #include <Windows.h>
 
 #define BUFFER_SIZE 4096
@@ -18,10 +25,12 @@ typedef struct OperCtx {
 	LPVOID userCtx;
 } OPER_CTX, *POPER_CTX;
 
-
+AsyncFileCopy_API
 BOOL AsyncInit();
 
+AsyncFileCopy_API
 BOOL CopyFileAsync(PCSTR srcFile, PCSTR dstFile, AsyncCallback cb, LPVOID userCtx);
 
+AsyncFileCopy_API
 VOID AsyncTerminate();
 
